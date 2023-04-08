@@ -1,30 +1,38 @@
 #!/usr/bin/env bash
-# installs Nginx if not already installed
-# creates several directories as well as a sym link
+# Sets up web servers for the deployment of the web_static part of the AirBnb project
 
-# Install Nginx if not already installed
-if [ ! -x "$(command -v nginx)" ]; then
-    sudo service "$(sudo lsof -i :80 | grep LISTEN | awk '{print $1}' | head -n 1)" stop &/dev/null;
-    sudo apt-get update
+
+# Install nginx if not installed
+nginx -v >/dev/null 2>&1;
+if [ "$echo $?" -ne 0 ]; then
+    sudo apt-get update > /dev/null 2>&1;
+    sudo apt-get install -y nginx > /dev/null 2>&1;
+
     sudo apt-get install -y nginx
-fi
 
-# Create required directories
-sudo mkdir -p /data/web_static/releases/test /data/web_static/shared
+    # kill services running on port 80
+    for pid in $(sudo lsof -t -i :80); do
+        sudo kill "$pid" > /dev/null 2>&1
+    done
 
-# Create a fake HTML file to test Nginx
-echo "<html><head><title>Test HTML File</title></head><body><h1>This is a test.</h1></body></html>" | sudo tee /data/web_static/releases/test/index.html &>/dev/null
+    # add nginx to firewall
+    sudo ufw allow "Nginx HTTP" > /dev/null 2>&1;
+    sudo ufw allow 80/tcp > /dev/null 2>&1;
+fi;
 
-# Create symbolic link to the test release
-sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
+# Create alias root directory for web_static content
+sudo mkdir -p /data/web_static/shared/ /data/web_static/releases/test/;
 
-# Set ownership to ubuntu user and group
-sudo chown -hR ubuntu:ubuntu /data/
+# Create fake HTML index page
+chown ubuntu /var/www/html
+echo "<html><body>Web static home page template</body></html>" | cat > /var/www/html/index.html;
 
-# Configure Nginx to serve content from the current release
-sudo sed -i '0,/^\(\s*\)server_name\s*.*$/s//\1server_name cheezaram.tech www.cheezaram.tech;/' /etc/nginx/sites-available/default
-sudo sed -i '0,/^\(\s*\)server_name cheezaram.tech www.cheezaram.tech;$/s//&\n\n\1location \/hbnb_static {\n\1\1alias \/data\/web_static\/current\/;\n\1\1autoindex off;\n\1}/' /etc/nginx/sites-available/default
+# change ownership of the "/data" directory
+chown -R ubuntu:ubuntu /data/
+ln -sf /data/web_static/releases/test/ /data/web_static/current;
 
-# Restart Nginx
-sudo service nginx stop &>/dev/null
-sudo service nginx start &>/dev/null
+# Configure nginx server to serve web static files
+sed -i '/^\s*root \/var\/www\/html;/s//&\n\tlocation \/hbnb_static {\n\t\talias \/data\/web_static\/current;\n\t}/' /etc/nginx/sites-available/default;
+
+# reload nginx
+sudo nginx -s reload;
