@@ -9,16 +9,15 @@ if [ "$echo $?" -ne 0 ]; then
     sudo apt-get install -y nginx > /dev/null 2>&1;
 
     sudo apt-get install -y nginx
-
-    # kill services running on port 80
-    for pid in $(sudo lsof -t -i :80); do
-        sudo kill "$pid" > /dev/null 2>&1
-    done
-
-    # add nginx to firewall
-    sudo ufw allow "Nginx HTTP" > /dev/null 2>&1;
-    sudo ufw allow 80/tcp > /dev/null 2>&1;
 fi;
+
+# kill services running on port 80
+for pid in $(sudo lsof -t -i :80); do
+    sudo kill "$pid" > /dev/null 2>&1
+done
+# add nginx to firewall
+sudo ufw allow "Nginx HTTP" > /dev/null 2>&1;
+sudo ufw allow 80/tcp > /dev/null 2>&1;
 
 # Create alias root directory for web_static content
 sudo mkdir -p /data/web_static/shared/ /data/web_static/releases/test/;
@@ -28,7 +27,7 @@ chown ubuntu /var/www/html
 echo "<html><body>Web static home page template</body></html>" | cat > /var/www/html/index.html;
 
 # change ownership of the "/data" directory
-chown -R ubuntu:ubuntu /data/
+chown -hR ubuntu:ubuntu /data/
 ln -sf /data/web_static/releases/test/ /data/web_static/current;
 
 # Configure nginx server to serve web static files
