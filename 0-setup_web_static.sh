@@ -14,6 +14,8 @@ fi;
 for pid in $(sudo lsof -t -i :80); do
     sudo kill "$pid" > /dev/null 2>&1
 done
+sudo service nginx start;
+
 # add nginx to firewall
 sudo ufw allow "Nginx HTTP" > /dev/null 2>&1;
 sudo ufw allow 80/tcp > /dev/null 2>&1;
@@ -22,11 +24,11 @@ sudo ufw allow 80/tcp > /dev/null 2>&1;
 sudo mkdir -p /data/web_static/shared/ /data/web_static/releases/test/;
 
 # Create fake HTML index page
-chown ubuntu /var/www/html
+sudo chown ubuntu /var/www/html
 echo "<html><body>Web static home page template</body></html>" | cat > /var/www/html/index.html;
 
 # change ownership of the "/data" directory
-chown -hR ubuntu:ubuntu /data/
+sudo chown -hR ubuntu:ubuntu /data/
 ln -sf /data/web_static/releases/test/ /data/web_static/current;
 
 # Configure nginx server to serve web static files
