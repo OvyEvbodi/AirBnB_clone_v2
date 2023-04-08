@@ -31,7 +31,7 @@ chown -hR ubuntu:ubuntu /data/
 ln -sf /data/web_static/releases/test/ /data/web_static/current;
 
 # Configure nginx server to serve web static files
-sed -i '/^\s*root \/var\/www\/html;/s//&\n\tlocation \/hbnb_static {\n\t\talias \/data\/web_static\/current;\n\t}/' /etc/nginx/sites-available/default;
+sudo sed -i '/^\s*root \/var\/www\/html;/s//&\n\tlocation \/hbnb_static {\n\t\talias \/data\/web_static\/current;\n\t}/' /etc/nginx/sites-available/default;
 
 # reload nginx
 sudo nginx -s reload;
