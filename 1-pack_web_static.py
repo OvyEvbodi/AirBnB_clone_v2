@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-"""
-Fabric script to generate a .tgz archive from the contents of the web_static
+""" This module generates a .tgz archive
+from the contents of the web_static folder of an AirBnB Clone repo.
+It contains 1 function ``do_pack``, which does all the work.
 """
 
 from fabric.api import local
@@ -8,11 +9,19 @@ from datetime import datetime
 
 
 def do_pack():
-    """Compress the web_static folder"""
+    """Generates a .tgz archive from a directory
 
-    local("mkdir -p versions")
-    currentTime = datetime.now().strftime("%Y%m%d%H%M%S")
-    path = "versions/web_static_{}.tgz".format(currentTime)
-    local("tar -cvzf {} web_static".format(path))
-    if local("[ -f versions/web_static_{}.tgz ]".format(currentTime)).strip():
-        return path
+    Returns:
+        The path to the archive upon success,
+        otherwise, None
+    """
+
+    date_now = datetime.now().strftime("%Y%m%d%H%M%S")
+    file_path = f"versions/web_static_{date_now}.tgz"
+
+    try:
+        local("mkdir -p versions")
+        local(f"tar -czvf {file_path} web_static")
+        return file_path
+    except Error:
+        return None
