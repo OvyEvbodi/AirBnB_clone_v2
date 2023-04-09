@@ -7,6 +7,9 @@ It contains 1 function ``do_deploy`` that does all the work
 from fabric.api import run, put, env
 from os import path
 
+env.hosts = ['18.208.119.54', '34.232.67.132']
+env.user = 'ubuntu'
+
 
 def do_deploy(archive_path):
     """Distributes an archive to remote web servers
@@ -18,9 +21,6 @@ def do_deploy(archive_path):
         True if all operations have been done correctly,
         otherwise False
     """
-
-    env.hosts = ['18.208.119.54', '34.232.67.132']
-    env.user = 'ubuntu'
 
     if not path.exists(archive_path):
         return False
