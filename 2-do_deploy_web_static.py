@@ -32,11 +32,11 @@ def do_deploy(archive_path):
     try:
         put(archive_path, "/tmp/")
         run("mkdir -p {}".format(file_path))
-        run("tar -xzf /tmp/{} -C {}".format(archive_path, file_path))
+        run("tar -xzf /tmp/{} -C {}".format(path_dir, file_path))
 
-        run("rm -rf /tmp/{}".format(archive_path))
+        run("rm -rf /tmp/{}".format(path_dir))
         run("rm -rf /data/web_static/current")
-        run("ln -sf {} /data/web_static/current/".format(file_path))
+        run("ln -sf {} /data/web_static/current".format(file_path))
         return True
     except Error:
         return False
