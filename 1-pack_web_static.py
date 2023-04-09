@@ -17,11 +17,11 @@ def do_pack():
     """
 
     date_now = datetime.now().strftime("%Y%m%d%H%M%S")
-    file_path = f"versions/web_static_{date_now}.tgz"
+    file_path = "versions/web_static_{}.tgz".format(date_now)
 
     try:
         local("mkdir -p versions")
-        local(f"tar -czvf {file_path} web_static")
+        local("tar -czvf {} web_static".format(file_path))
         return file_path
     except Error:
         return None
