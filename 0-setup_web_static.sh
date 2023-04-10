@@ -25,7 +25,7 @@ sudo mkdir -p /data/web_static/shared/ /data/web_static/releases/test/;
 
 # Create fake HTML index page
 sudo chown ubuntu /var/www/html
-echo "<html><head></head><body>Web static home page template</body></html>" | sudo cat > /data/web_static/releases/test/index.html;
+echo "<html><head></head><body>Web static home page template</body></html>" | tee /data/web_static/releases/test/index.html;
 
 # change ownership of the "/data" directory
 sudo chown -hR ubuntu:ubuntu /data/
