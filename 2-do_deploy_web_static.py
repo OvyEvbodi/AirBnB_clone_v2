@@ -26,7 +26,7 @@ def do_deploy(archive_path):
         return False
 
     path_dir = archive_path.split('/')[-1]
-    file_path = "/data/web_static/releases/" + path_dir.split('.')[0]
+    file_path = "/data/web_static/releases/" + path_dir.split('.')[0] + "/"
     print(file_path)
 
     try:
@@ -35,6 +35,8 @@ def do_deploy(archive_path):
         run("tar -xzf /tmp/{} -C {}".format(path_dir, file_path))
 
         run("rm -rf /tmp/{}".format(path_dir))
+        run("mv {0}web_static/* {0}".format(file_path))
+        run("rm -rf {}web_static".format(file_path))
         run("rm -rf /data/web_static/current")
         run("ln -sf {} /data/web_static/current".format(file_path))
         return True
