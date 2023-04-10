@@ -6,8 +6,6 @@
 if ! nginx -v >/dev/null 2>&1;then
     sudo apt-get update > /dev/null 2>&1;
     sudo apt-get install -y nginx > /dev/null 2>&1;
-
-    sudo apt-get install -y nginx
 fi;
 
 # kill services running on port 80
