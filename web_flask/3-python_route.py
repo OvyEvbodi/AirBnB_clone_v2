@@ -35,7 +35,7 @@ def c_path(text):
 def python(text='is_cool'):
     """Renders `Python` followed by the text passed in the route"""
 
-    return "Python {}"..format(text.replace('_', ' '))
+    return "Python {}".format(text.replace('_', ' '))
 
 
 if __name__ == '__main__':
