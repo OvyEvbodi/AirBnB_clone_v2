@@ -42,7 +42,7 @@ def python(text='is_cool'):
 def is_it_a_number(n):
     """Renders n is a number, if it is"""
 
-    return "{:d} is a number".format(n.replace('_', ' '))
+    return "{:d} is a number".format(n)
 
 
 if __name__ == '__main__':
