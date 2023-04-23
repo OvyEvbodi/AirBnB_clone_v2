@@ -27,8 +27,7 @@ def hbnb():
 def c_path(text):
     """Renders `C` followed by the text passed in the route"""
 
-    text = text.replace('_', ' ')
-    return f"C {text}"
+    return "C {}".format(text.replace('_', ' '))
 
 
 @app.route("/python", strict_slashes=False)
@@ -36,8 +35,7 @@ def c_path(text):
 def python(text='is_cool'):
     """Renders `Python` followed by the text passed in the route"""
 
-    text = text.replace('_', ' ')
-    return f"Python {text}"
+    return "Python {}"..format(text.replace('_', ' '))
 
 
 if __name__ == '__main__':
