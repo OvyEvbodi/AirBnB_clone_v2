@@ -77,7 +77,7 @@ class FileStorage:
             raise TypeError("{} must be an instance of BaseModel".format(obj))
 
         try:
-            key = "{}.{}"format(obj.__class__.__name__, obj.id)
+            key = "{}.{}".format(obj.__class__.__name__, obj.id)
             del FileStorage.__objects[key]
             FileStorage.save(self)
         except KeyError:
