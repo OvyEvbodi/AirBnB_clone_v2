@@ -37,6 +37,7 @@ def python(text='is_cool'):
 
     return "Python {}".format(text.replace('_', ' '))
 
+
 @app.route("/number/<int:n>", strict_slashes=False)
 def is_it_a_number(n):
     """Renders n is a number, if it is"""
